@@ -13,7 +13,7 @@ export type SourcesProps = ComponentProps<'div'>;
 
 export const Sources = ({ className, ...props }: SourcesProps) => (
   <Collapsible
-    className={cn('not-prose mb-4 text-primary text-xs', className)}
+    className={cn('not-prose mb-4 bg-gradient-to-br from-slate-800/60 via-blue-900/40 to-indigo-900/60 backdrop-blur-xl rounded-xl border border-slate-600/50 shadow-lg overflow-hidden', className)}
     {...props}
   />
 );
@@ -23,17 +23,19 @@ export type SourcesTriggerProps = ComponentProps<typeof CollapsibleTrigger> & {
 };
 
 export const SourcesTrigger = ({
-  className,
   count,
   children,
   ...props
 }: SourcesTriggerProps) => (
-  <CollapsibleTrigger className="flex items-center gap-2" {...props}>
+  <CollapsibleTrigger
+    className="w-full flex items-center justify-between px-2 py-1 bg-gradient-to-r from-blue-600/10 to-indigo-600/10 hover:from-blue-600/20 hover:to-indigo-600/20 transition-all duration-200 text-white border-b border-slate-600/20"
+    {...props}
+  >
     {children ?? (
-      <>
-        <p className="font-medium">Used {count} sources</p>
-        <ChevronDownIcon className="h-4 w-4" />
-      </>
+      <div className="flex items-center justify-between w-full">
+        <span className="text-xs text-green-200">{count} sources</span>
+        <ChevronDownIcon className="size-3 text-green-300 transition-transform duration-200 data-[state=open]:rotate-180" />
+      </div>
     )}
   </CollapsibleTrigger>
 );
@@ -46,7 +48,7 @@ export const SourcesContent = ({
 }: SourcesContentProps) => (
   <CollapsibleContent
     className={cn(
-      'mt-3 flex flex-col gap-2 w-fit',
+      'p-2 bg-gradient-to-br from-slate-800/10 to-blue-900/10',
       'outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2',
       className,
     )}
@@ -58,17 +60,12 @@ export type SourceProps = ComponentProps<'a'>;
 
 export const Source = ({ href, title, children, ...props }: SourceProps) => (
   <a
-    className="flex items-center gap-2"
+    className="block text-xs text-blue-300 hover:text-blue-200 transition-colors truncate"
     href={href}
     rel="noreferrer"
     target="_blank"
     {...props}
   >
-    {children ?? (
-      <>
-        <BookIcon className="h-4 w-4" />
-        <span className="block font-medium">{title}</span>
-      </>
-    )}
+    {children ?? new URL(href || '').hostname}
   </a>
 );
